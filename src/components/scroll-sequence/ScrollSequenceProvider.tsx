@@ -36,7 +36,7 @@ export function ScrollSequenceProvider() {
     cacheCap,
   });
 
-  const { frameIndexRef } = useScrollSequenceController({ trackRef, totalFrames });
+  const { frameIndexRef } = useScrollSequenceController({ trackRef, manifest });
 
   return (
     <div ref={trackRef} data-testid="scroll-sequence-track" style={{ height: "100vh" }}>
