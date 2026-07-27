@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
+import { WhatsAppButton } from "@/components/whatsapp";
 import "./globals.css";
 
 const rubik = Rubik({
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="he" dir="rtl" className={`${rubik.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        {children}
+        <WhatsAppButton />
+      </body>
     </html>
   );
 }

@@ -2,7 +2,11 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: "./e2e",
-  fullyParallel: true,
+  // Serial execution avoids CPU contention between parallel workers skewing
+  // the scroll-sequence test's GSAP animation timing (observed flaky under
+  // parallel workers, reliable serially).
+  fullyParallel: false,
+  workers: 1,
   reporter: "list",
   use: {
     baseURL: "http://localhost:3000",
