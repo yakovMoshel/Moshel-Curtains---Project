@@ -19,7 +19,7 @@ if (typeof window !== "undefined") {
 
 /** Scroll distance (px) allotted per frame — determines the pinned track's total height. */
 export const PX_PER_FRAME = 12;
-const TRANSITION_DURATION = 1;
+const TRANSITION_DURATION = 1.8;
 /** Swallows trailing trackpad/mouse momentum after a transition so it doesn't chain into another. */
 const POST_TRANSITION_COOLDOWN_MS = 400;
 /** Minimum touch movement (px) needed to read a reliable drag direction. */
@@ -82,7 +82,7 @@ export function useScrollSequenceController({
       gsap.to(window, {
         scrollTo: targetY,
         duration: TRANSITION_DURATION,
-        ease: "power2.inOut",
+        ease: "sine.inOut",
         onComplete: () => {
           isAnimating = false;
           cooldownUntil = Date.now() + POST_TRANSITION_COOLDOWN_MS;
