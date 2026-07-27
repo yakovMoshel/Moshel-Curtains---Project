@@ -18,7 +18,22 @@
   }
 }
 
+html {
+  /* Prevents mobile pull-to-refresh/rubber-banding from fighting the
+     scroll-sequence's own wheel/touch interception near the page edges. */
+  overscroll-behavior-y: contain;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+.scroll-sequence-track {
+  position: relative;
+  overflow: hidden;
+  /* 100dvh accounts for mobile browsers' collapsing address bar; the 100vh
+     line is a fallback for browsers that don't support dvh. */
+  height: 100vh;
+  height: 100dvh;
 }

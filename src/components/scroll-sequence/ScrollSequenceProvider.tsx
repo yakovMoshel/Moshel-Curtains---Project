@@ -40,11 +40,7 @@ export function ScrollSequenceProvider() {
   const { frameIndexRef } = useScrollSequenceController({ trackRef, manifest });
 
   return (
-    <div
-      ref={trackRef}
-      data-testid="scroll-sequence-track"
-      style={{ height: "100vh", position: "relative", overflow: "hidden" }}
-    >
+    <div ref={trackRef} data-testid="scroll-sequence-track" className="scroll-sequence-track">
       {manifest && variant ? (
         <>
           <ScrollSequenceCanvas

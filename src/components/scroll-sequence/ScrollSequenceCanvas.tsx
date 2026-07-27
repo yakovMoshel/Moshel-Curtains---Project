@@ -85,5 +85,11 @@ export function ScrollSequenceCanvas({
     return () => cancelAnimationFrame(rafId);
   }, [width, height, cacheRef, frameIndexRef, totalFrames]);
 
-  return <canvas ref={canvasRef} style={{ width: "100%", height: "100%", display: "block" }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      style={{ width: "100%", height: "100%", display: "block" }}
+    />
+  );
 }

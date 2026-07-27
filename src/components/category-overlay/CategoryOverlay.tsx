@@ -15,10 +15,16 @@ export function CategoryOverlay({ section }: CategoryOverlayProps) {
   const content = CATEGORY_CONTENT[section.category];
   if (!content) return null;
 
+  // Below this threshold the section is effectively invisible — remove it from the
+  // accessibility tree and tab order so keyboard/screen-reader users don't land on
+  // "phantom" content they can't see.
+  const isActive = opacity > 0.5;
+
   return (
     <div
       className="absolute inset-x-0 bottom-0 flex justify-start p-8 sm:p-16"
-      style={{ opacity, pointerEvents: opacity > 0.5 ? "auto" : "none" }}
+      style={{ opacity, pointerEvents: isActive ? "auto" : "none" }}
+      aria-hidden={!isActive}
     >
       <div className="max-w-md space-y-4 text-stone-50 drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
         <p className="text-sm font-medium tracking-[0.2em] text-stone-200 uppercase">
@@ -28,6 +34,7 @@ export function CategoryOverlay({ section }: CategoryOverlayProps) {
         <p className="max-w-sm text-base text-stone-100 sm:text-lg">{content.copy}</p>
         <Link
           href={content.href}
+          tabIndex={isActive ? 0 : -1}
           className="inline-block border-b border-stone-50/60 pb-1 text-sm font-medium tracking-wide transition-colors hover:border-stone-50"
         >
           {content.ctaLabel}
