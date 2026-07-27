@@ -6,6 +6,7 @@ import { useFrameManifest } from "@/components/scroll-sequence/useFrameManifest"
 import { useFrameLoader } from "@/components/scroll-sequence/useFrameLoader";
 import { useScrollSequenceController } from "@/components/scroll-sequence/useScrollSequenceController";
 import { ScrollSequenceCanvas } from "@/components/scroll-sequence/ScrollSequenceCanvas";
+import { CategoryOverlays } from "@/components/category-overlay/CategoryOverlays";
 
 const DESKTOP_CACHE_CAP = 90;
 const MOBILE_CACHE_CAP = 60;
@@ -39,15 +40,22 @@ export function ScrollSequenceProvider() {
   const { frameIndexRef } = useScrollSequenceController({ trackRef, manifest });
 
   return (
-    <div ref={trackRef} data-testid="scroll-sequence-track" style={{ height: "100vh" }}>
+    <div
+      ref={trackRef}
+      data-testid="scroll-sequence-track"
+      style={{ height: "100vh", position: "relative", overflow: "hidden" }}
+    >
       {manifest && variant ? (
-        <ScrollSequenceCanvas
-          frameIndexRef={frameIndexRef}
-          cacheRef={cacheRef}
-          width={variant.width}
-          height={variant.height}
-          totalFrames={totalFrames}
-        />
+        <>
+          <ScrollSequenceCanvas
+            frameIndexRef={frameIndexRef}
+            cacheRef={cacheRef}
+            width={variant.width}
+            height={variant.height}
+            totalFrames={totalFrames}
+          />
+          <CategoryOverlays sections={manifest.categorySections} />
+        </>
       ) : null}
     </div>
   );
