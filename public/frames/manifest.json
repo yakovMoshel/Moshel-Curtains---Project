@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-27T08:58:31.668Z",
+  "fps": 12,
+  "totalFrames": 451,
+  "framePattern": "frame_%05d.webp",
+  "variants": {
+    "desktop": {
+      "width": 1280,
+      "height": 712,
+      "basePath": "/frames/sequence"
+    },
+    "mobile": {
+      "width": 720,
+      "height": 400,
+      "basePath": "/frames/sequence-mobile"
+    }
+  },
+  "segments": [
+    {
+      "id": "curtains",
+      "kind": "category",
+      "category": "curtains",
+      "label": "Curtains",
+      "startFrame": 1,
+      "endFrame": 73
+    },
+    {
+      "id": "curtains-to-blinds",
+      "kind": "bridge",
+      "from": "curtains",
+      "to": "blinds",
+      "startFrame": 74,
+      "endFrame": 134
+    },
+    {
+      "id": "blinds",
+      "kind": "category",
+      "category": "blinds",
+      "label": "Blinds",
+      "startFrame": 135,
+      "endFrame": 195
+    },
+    {
+      "id": "blinds-to-upholstery",
+      "kind": "bridge",
+      "from": "blinds",
+      "to": "upholstery",
+      "startFrame": 196,
+      "endFrame": 256
+    },
+    {
+      "id": "upholstery",
+      "kind": "category",
+      "category": "upholstery",
+      "label": "Upholstery",
+      "startFrame": 257,
+      "endFrame": 329
+    },
+    {
+      "id": "upholstery-to-tablecloth",
+      "kind": "bridge",
+      "from": "upholstery",
+      "to": "tablecloths",
+      "startFrame": 330,
+      "endFrame": 390
+    },
+    {
+      "id": "tablecloth",
+      "kind": "category",
+      "category": "tablecloths",
+      "label": "Tablecloths",
+      "startFrame": 391,
+      "endFrame": 451
+    }
+  ],
+  "categorySections": [
+    {
+      "category": "curtains",
+      "label": "Curtains",
+      "contentStartFrame": 1,
+      "contentEndFrame": 73,
+      "fadeInRange": [
+        1,
+        1
+      ],
+      "fadeOutRange": [
+        74,
+        104
+      ],
+      "sectionStartFrame": 1,
+      "sectionEndFrame": 104
+    },
+    {
+      "category": "blinds",
+      "label": "Blinds",
+      "contentStartFrame": 135,
+      "contentEndFrame": 195,
+      "fadeInRange": [
+        104,
+        134
+      ],
+      "fadeOutRange": [
+        196,
+        226
+      ],
+      "sectionStartFrame": 104,
+      "sectionEndFrame": 226
+    },
+    {
+      "category": "upholstery",
+      "label": "Upholstery",
+      "contentStartFrame": 257,
+      "contentEndFrame": 329,
+      "fadeInRange": [
+        226,
+        256
+      ],
+      "fadeOutRange": [
+        330,
+        360
+      ],
+      "sectionStartFrame": 226,
+      "sectionEndFrame": 360
+    },
+    {
+      "category": "tablecloths",
+      "label": "Tablecloths",
+      "contentStartFrame": 391,
+      "contentEndFrame": 451,
+      "fadeInRange": [
+        360,
+        390
+      ],
+      "fadeOutRange": [
+        451,
+        451
+      ],
+      "sectionStartFrame": 360,
+      "sectionEndFrame": 451
+    }
+  ]
+}
