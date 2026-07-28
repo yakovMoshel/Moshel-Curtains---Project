@@ -29,24 +29,28 @@ export interface StopTransition {
  * Given the current stop and a gesture direction, decides which stop to move
  * to next, and whether this gesture should be captured at all. At the very
  * last stop, a further forward gesture is released to native scroll (so the
- * page can continue past the pinned section into Gallery); at the first
- * stop, a further backward gesture is a captured no-op (nothing above it).
+ * page can continue past the pinned section into Gallery); at or below
+ * `minIndex`, a further backward gesture is a captured no-op (nothing above
+ * it) — normally that's the first stop (index 0), but when stop 0 is a
+ * one-way intro (see `useScrollSequenceController`), callers pass
+ * `minIndex: 1` so backward navigation can never return to it once left.
  */
 export function resolveStopTransition(
   currentIndex: number,
   direction: 1 | -1,
   stopCount: number,
+  minIndex = 0,
 ): StopTransition {
   const candidate = currentIndex + direction;
 
   if (direction > 0 && currentIndex >= stopCount - 1) {
     return { nextIndex: currentIndex, shouldIntercept: false };
   }
-  if (direction < 0 && currentIndex <= 0) {
+  if (direction < 0 && currentIndex <= minIndex) {
     return { nextIndex: currentIndex, shouldIntercept: true };
   }
 
-  const clamped = Math.min(stopCount - 1, Math.max(0, candidate));
+  const clamped = Math.min(stopCount - 1, Math.max(minIndex, candidate));
   return { nextIndex: clamped, shouldIntercept: true };
 }
 

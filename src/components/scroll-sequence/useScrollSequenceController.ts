@@ -42,6 +42,10 @@ export function useScrollSequenceController({
     if (!trackEl || !manifest || totalFrames <= 0) return undefined;
 
     const stops = buildStops(manifest);
+    // When the first stop is a genuinely distinct intro (not the first category
+    // itself starting at frame 1), it's a one-time first impression — lock
+    // backward navigation so it can never be scrolled back into once left.
+    const minStopIndex = manifest.categorySections[0]?.contentStartFrame !== 1 ? 1 : 0;
     let currentStopIndex = 0;
     let isAnimating = false;
     let cooldownUntil = 0;
@@ -70,6 +74,7 @@ export function useScrollSequenceController({
         currentStopIndex,
         direction,
         stops.length,
+        minStopIndex,
       );
       if (!shouldIntercept) return false;
       if (nextIndex === currentStopIndex) return true;

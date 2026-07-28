@@ -138,14 +138,15 @@ function buildIntroSection(segments) {
   if (!introSeg) return null;
 
   const frameCount = introSeg.endFrame - introSeg.startFrame + 1;
-  const fadeInEnd = introSeg.startFrame + Math.round(frameCount * 0.25) - 1;
   const fadeOutStart = introSeg.startFrame + Math.round(frameCount * 0.65) - 1;
 
   return {
     label: introSeg.label,
     sectionStartFrame: introSeg.startFrame,
     sectionEndFrame: introSeg.endFrame,
-    textFadeInRange: [introSeg.startFrame, fadeInEnd],
+    // Instantly visible from the very first frame (zero-width fadeInRange), per
+    // the user's request — no gradual fade-in.
+    textFadeInRange: [introSeg.startFrame, introSeg.startFrame],
     textFadeOutRange: [fadeOutStart, introSeg.endFrame],
   };
 }

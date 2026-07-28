@@ -83,7 +83,7 @@ const manifestWithIntro: SequenceManifest = {
     label: "ברוכים הבאים למושל הוילונות",
     sectionStartFrame: 1,
     sectionEndFrame: 73,
-    textFadeInRange: [1, 18],
+    textFadeInRange: [1, 1],
     textFadeOutRange: [47, 73],
   },
   categorySections: manifestWithoutIntro.categorySections.map((section) => ({
@@ -132,6 +132,29 @@ describe("resolveStopTransition", () => {
     expect(resolveStopTransition(0, -1, stopCount)).toEqual({
       nextIndex: 0,
       shouldIntercept: true,
+    });
+  });
+
+  describe("with minIndex (one-way intro gate)", () => {
+    it("captures a no-op backward gesture at minIndex instead of returning to stop 0", () => {
+      expect(resolveStopTransition(1, -1, stopCount, 1)).toEqual({
+        nextIndex: 1,
+        shouldIntercept: true,
+      });
+    });
+
+    it("still steps back normally between stops above minIndex", () => {
+      expect(resolveStopTransition(2, -1, stopCount, 1)).toEqual({
+        nextIndex: 1,
+        shouldIntercept: true,
+      });
+    });
+
+    it("leaves forward navigation unaffected by minIndex", () => {
+      expect(resolveStopTransition(1, 1, stopCount, 1)).toEqual({
+        nextIndex: 2,
+        shouldIntercept: true,
+      });
     });
   });
 });

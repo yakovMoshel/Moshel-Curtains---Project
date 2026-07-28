@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-28T11:06:38.140Z",
+  "generatedAt": "2026-07-28T12:23:59.489Z",
   "fps": 12,
   "totalFrames": 524,
   "framePattern": "frame_%05d.webp",
@@ -87,7 +87,7 @@
     "sectionEndFrame": 73,
     "textFadeInRange": [
       1,
-      18
+      1
     ],
     "textFadeOutRange": [
       47,
