@@ -6,7 +6,19 @@ import {
 } from "@/components/scroll-sequence/scrollStops";
 import type { SequenceManifest } from "@/lib/manifest.types";
 
-const manifest: SequenceManifest = {
+// A placeholder introSection — buildStops() never reads it, only categorySections
+// and totalFrames, so its exact values don't matter for these fixtures.
+const placeholderIntroSection = {
+  label: "intro",
+  sectionStartFrame: 1,
+  sectionEndFrame: 1,
+  textFadeInRange: [1, 1] as [number, number],
+  textFadeOutRange: [1, 1] as [number, number],
+};
+
+// Shape from before the intro clip existed: the first category (Curtains)
+// itself starts at frame 1.
+const manifestWithoutIntro: SequenceManifest = {
   version: 1,
   generatedAt: "2026-01-01T00:00:00.000Z",
   fps: 12,
@@ -17,6 +29,7 @@ const manifest: SequenceManifest = {
     mobile: { width: 720, height: 400, basePath: "/frames/sequence-mobile" },
   },
   segments: [],
+  introSection: placeholderIntroSection,
   categorySections: [
     {
       category: "curtains",
@@ -61,9 +74,36 @@ const manifest: SequenceManifest = {
   ],
 };
 
+// Current shape: the intro clip occupies frames 1-73, so Curtains (the first
+// category) now starts later.
+const manifestWithIntro: SequenceManifest = {
+  ...manifestWithoutIntro,
+  totalFrames: 524,
+  introSection: {
+    label: "ברוכים הבאים למושל הוילונות",
+    sectionStartFrame: 1,
+    sectionEndFrame: 73,
+    textFadeInRange: [1, 18],
+    textFadeOutRange: [47, 73],
+  },
+  categorySections: manifestWithoutIntro.categorySections.map((section) => ({
+    ...section,
+    contentStartFrame: section.contentStartFrame + 73,
+    contentEndFrame: section.contentEndFrame + 73,
+    fadeInRange: [section.fadeInRange[0] + 73, section.fadeInRange[1] + 73],
+    fadeOutRange: [section.fadeOutRange[0] + 73, section.fadeOutRange[1] + 73],
+    sectionStartFrame: section.sectionStartFrame + 73,
+    sectionEndFrame: section.sectionEndFrame + 73,
+  })),
+};
+
 describe("buildStops", () => {
-  it("builds a stop per category start plus the final frame", () => {
-    expect(buildStops(manifest)).toEqual([1, 135, 257, 391, 451]);
+  it("dedupes frame 1 when the first category already starts there (no intro)", () => {
+    expect(buildStops(manifestWithoutIntro)).toEqual([1, 135, 257, 391, 451]);
+  });
+
+  it("keeps frame 1 as its own stop when the first category starts later (with intro)", () => {
+    expect(buildStops(manifestWithIntro)).toEqual([1, 74, 208, 330, 464, 524]);
   });
 });
 

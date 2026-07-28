@@ -68,7 +68,9 @@ async function extractVariant(variant) {
       kind: clip.kind,
       ...(clip.kind === "category"
         ? { category: clip.category, label: clip.label }
-        : { from: clip.from, to: clip.to }),
+        : clip.kind === "bridge"
+          ? { from: clip.from, to: clip.to }
+          : { label: clip.label }),
       startFrame: startNumber,
       endFrame,
     });
@@ -83,22 +85,29 @@ async function extractVariant(variant) {
   return { outDir, totalFrames: runningTotal, segments };
 }
 
-function buildCategorySections(segments) {
+function buildCategorySections(segments, introSection) {
   const categorySegments = segments.filter((s) => s.kind === "category");
   const bridgeByFrom = new Map(segments.filter((s) => s.kind === "bridge").map((s) => [s.from, s]));
   const bridgeByTo = new Map(segments.filter((s) => s.kind === "bridge").map((s) => [s.to, s]));
 
-  return categorySegments.map((seg) => {
+  return categorySegments.map((seg, index) => {
     const contentStartFrame = seg.startFrame;
     const contentEndFrame = seg.endFrame;
 
     const precedingBridge = bridgeByTo.get(seg.category);
     const followingBridge = bridgeByFrom.get(seg.category);
+    const precededByIntro =
+      index === 0 && introSection && introSection.sectionEndFrame + 1 === contentStartFrame;
 
     let fadeInRange;
     if (precedingBridge) {
       const mid = Math.round((precedingBridge.startFrame + precedingBridge.endFrame) / 2);
       fadeInRange = [mid, precedingBridge.endFrame];
+    } else if (precededByIntro) {
+      // No bridge clip between the intro and the first category — instead, fade
+      // this category's overlay in as the intro's own welcome text fades out,
+      // over the same frame range (mirrors how bridges cross-fade categories).
+      fadeInRange = introSection.textFadeOutRange;
     } else {
       fadeInRange = [contentStartFrame, contentStartFrame];
     }
@@ -124,6 +133,23 @@ function buildCategorySections(segments) {
   });
 }
 
+function buildIntroSection(segments) {
+  const introSeg = segments.find((s) => s.kind === "intro");
+  if (!introSeg) return null;
+
+  const frameCount = introSeg.endFrame - introSeg.startFrame + 1;
+  const fadeInEnd = introSeg.startFrame + Math.round(frameCount * 0.25) - 1;
+  const fadeOutStart = introSeg.startFrame + Math.round(frameCount * 0.65) - 1;
+
+  return {
+    label: introSeg.label,
+    sectionStartFrame: introSeg.startFrame,
+    sectionEndFrame: introSeg.endFrame,
+    textFadeInRange: [introSeg.startFrame, fadeInEnd],
+    textFadeOutRange: [fadeOutStart, introSeg.endFrame],
+  };
+}
+
 async function getFrameDimensions(outDir) {
   const entries = (await fs.readdir(outDir)).filter((name) => FRAME_NAME_RE.test(name)).sort();
   const firstFrame = path.join(outDir, entries[0]);
@@ -146,7 +172,7 @@ async function printSanityReport(desktopResult, desktopOutDir) {
     }
     const frameCount = seg.endFrame - seg.startFrame + 1;
     rows.push({
-      label: seg.kind === "category" ? seg.label : `(bridge: ${seg.id})`,
+      label: seg.kind === "bridge" ? `(bridge: ${seg.id})` : seg.label,
       frameCount,
       bytes,
     });
@@ -195,7 +221,20 @@ async function main() {
     }
   }
 
-  const categorySections = buildCategorySections(desktop.segments);
+  const introSection = buildIntroSection(desktop.segments);
+  const categorySections = buildCategorySections(desktop.segments, introSection);
+
+  if (introSection && introSection.sectionEndFrame + 1 !== categorySections[0]?.contentStartFrame) {
+    console.warn(
+      `⚠ WARNING: intro section ends at frame ${introSection.sectionEndFrame}, but the first category starts at ${categorySections[0]?.contentStartFrame} — expected them to be adjacent (no bridge).`,
+    );
+  }
+  const lastCategory = categorySections[categorySections.length - 1];
+  if (lastCategory && lastCategory.sectionEndFrame !== desktop.totalFrames) {
+    console.warn(
+      `⚠ WARNING: last category's sectionEndFrame (${lastCategory.sectionEndFrame}) does not equal totalFrames (${desktop.totalFrames}).`,
+    );
+  }
 
   const manifest = {
     version: 1,
@@ -205,6 +244,7 @@ async function main() {
     framePattern: "frame_%05d.webp",
     variants: {},
     segments: desktop.segments,
+    introSection,
     categorySections,
   };
 

@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-27T08:58:31.668Z",
+  "generatedAt": "2026-07-28T11:06:38.140Z",
   "fps": 12,
-  "totalFrames": 451,
+  "totalFrames": 524,
   "framePattern": "frame_%05d.webp",
   "variants": {
     "desktop": {
@@ -18,126 +18,146 @@
   },
   "segments": [
     {
+      "id": "intro-entrance",
+      "kind": "intro",
+      "label": "ברוכים הבאים למושל הוילונות",
+      "startFrame": 1,
+      "endFrame": 73
+    },
+    {
       "id": "curtains",
       "kind": "category",
       "category": "curtains",
       "label": "Curtains",
-      "startFrame": 1,
-      "endFrame": 73
+      "startFrame": 74,
+      "endFrame": 146
     },
     {
       "id": "curtains-to-blinds",
       "kind": "bridge",
       "from": "curtains",
       "to": "blinds",
-      "startFrame": 74,
-      "endFrame": 134
+      "startFrame": 147,
+      "endFrame": 207
     },
     {
       "id": "blinds",
       "kind": "category",
       "category": "blinds",
       "label": "Blinds",
-      "startFrame": 135,
-      "endFrame": 195
+      "startFrame": 208,
+      "endFrame": 268
     },
     {
       "id": "blinds-to-upholstery",
       "kind": "bridge",
       "from": "blinds",
       "to": "upholstery",
-      "startFrame": 196,
-      "endFrame": 256
+      "startFrame": 269,
+      "endFrame": 329
     },
     {
       "id": "upholstery",
       "kind": "category",
       "category": "upholstery",
       "label": "Upholstery",
-      "startFrame": 257,
-      "endFrame": 329
+      "startFrame": 330,
+      "endFrame": 402
     },
     {
       "id": "upholstery-to-tablecloth",
       "kind": "bridge",
       "from": "upholstery",
       "to": "tablecloths",
-      "startFrame": 330,
-      "endFrame": 390
+      "startFrame": 403,
+      "endFrame": 463
     },
     {
       "id": "tablecloth",
       "kind": "category",
       "category": "tablecloths",
       "label": "Tablecloths",
-      "startFrame": 391,
-      "endFrame": 451
+      "startFrame": 464,
+      "endFrame": 524
     }
   ],
+  "introSection": {
+    "label": "ברוכים הבאים למושל הוילונות",
+    "sectionStartFrame": 1,
+    "sectionEndFrame": 73,
+    "textFadeInRange": [
+      1,
+      18
+    ],
+    "textFadeOutRange": [
+      47,
+      73
+    ]
+  },
   "categorySections": [
     {
       "category": "curtains",
       "label": "Curtains",
-      "contentStartFrame": 1,
-      "contentEndFrame": 73,
+      "contentStartFrame": 74,
+      "contentEndFrame": 146,
       "fadeInRange": [
-        1,
-        1
+        47,
+        73
       ],
       "fadeOutRange": [
-        74,
-        104
+        147,
+        177
       ],
-      "sectionStartFrame": 1,
-      "sectionEndFrame": 104
+      "sectionStartFrame": 47,
+      "sectionEndFrame": 177
     },
     {
       "category": "blinds",
       "label": "Blinds",
-      "contentStartFrame": 135,
-      "contentEndFrame": 195,
+      "contentStartFrame": 208,
+      "contentEndFrame": 268,
       "fadeInRange": [
-        104,
-        134
+        177,
+        207
       ],
       "fadeOutRange": [
-        196,
-        226
+        269,
+        299
       ],
-      "sectionStartFrame": 104,
-      "sectionEndFrame": 226
+      "sectionStartFrame": 177,
+      "sectionEndFrame": 299
     },
     {
       "category": "upholstery",
       "label": "Upholstery",
-      "contentStartFrame": 257,
-      "contentEndFrame": 329,
+      "contentStartFrame": 330,
+      "contentEndFrame": 402,
       "fadeInRange": [
-        226,
-        256
+        299,
+        329
       ],
       "fadeOutRange": [
-        330,
-        360
+        403,
+        433
       ],
-      "sectionStartFrame": 226,
-      "sectionEndFrame": 360
+      "sectionStartFrame": 299,
+      "sectionEndFrame": 433
     },
     {
       "category": "tablecloths",
       "label": "Tablecloths",
-      "contentStartFrame": 391,
-      "contentEndFrame": 451,
+      "contentStartFrame": 464,
+      "contentEndFrame": 524,
       "fadeInRange": [
-        360,
-        390
+        433,
+        463
       ],
       "fadeOutRange": [
-        451,
-        451
+        524,
+        524
       ],
-      "sectionStartFrame": 360,
-      "sectionEndFrame": 451
+      "sectionStartFrame": 433,
+      "sectionEndFrame": 524
     }
   ]
 }

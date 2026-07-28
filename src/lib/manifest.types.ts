@@ -24,7 +24,15 @@ export interface BridgeSegment {
   endFrame: number;
 }
 
-export type Segment = CategorySegment | BridgeSegment;
+export interface IntroSegment {
+  id: string;
+  kind: "intro";
+  label: string;
+  startFrame: number;
+  endFrame: number;
+}
+
+export type Segment = CategorySegment | BridgeSegment | IntroSegment;
 
 export interface CategorySection {
   category: string;
@@ -37,6 +45,14 @@ export interface CategorySection {
   sectionEndFrame: number;
 }
 
+export interface IntroSection {
+  label: string;
+  sectionStartFrame: number;
+  sectionEndFrame: number;
+  textFadeInRange: [number, number];
+  textFadeOutRange: [number, number];
+}
+
 export interface SequenceManifest {
   version: number;
   generatedAt: string;
@@ -45,5 +61,6 @@ export interface SequenceManifest {
   framePattern: string;
   variants: Record<VariantName, FrameVariant>;
   segments: Segment[];
+  introSection: IntroSection;
   categorySections: CategorySection[];
 }

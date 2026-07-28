@@ -1,15 +1,22 @@
 import type { SequenceManifest } from "@/lib/manifest.types";
 
 /**
- * The frame indices where a scroll gesture should land: the start of each
- * category plus the very last frame of the sequence (where control hands
- * off to normal document scroll for Gallery/About/Contact).
+ * The frame indices where a scroll gesture should land: frame 1 (the resting
+ * position on load — today that's the intro, previously it was Curtains
+ * itself), the start of each category, and the very last frame of the
+ * sequence (where control hands off to normal document scroll for
+ * Gallery/About/Contact).
+ *
+ * `stops[0]` is treated by the controller as "where we're already resting",
+ * not a destination — the first gesture travels to `stops[1]`. Frame 1 is
+ * always prepended explicitly so that holds true whether or not the first
+ * category itself happens to start at frame 1 (it did before the intro
+ * clip existed; a duplicate is deduped here so that case still works).
  */
 export function buildStops(manifest: SequenceManifest): number[] {
-  return [
-    ...manifest.categorySections.map((section) => section.contentStartFrame),
-    manifest.totalFrames,
-  ];
+  const categoryStarts = manifest.categorySections.map((section) => section.contentStartFrame);
+  const stops = [1, ...categoryStarts, manifest.totalFrames];
+  return stops.filter((frame, i) => i === 0 || frame !== stops[i - 1]);
 }
 
 export interface StopTransition {

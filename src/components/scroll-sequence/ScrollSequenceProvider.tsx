@@ -7,6 +7,7 @@ import { useFrameLoader } from "@/components/scroll-sequence/useFrameLoader";
 import { useScrollSequenceController } from "@/components/scroll-sequence/useScrollSequenceController";
 import { ScrollSequenceCanvas } from "@/components/scroll-sequence/ScrollSequenceCanvas";
 import { CategoryOverlays } from "@/components/category-overlay/CategoryOverlays";
+import { IntroOverlay } from "@/components/intro-overlay/IntroOverlay";
 
 const DESKTOP_CACHE_CAP = 90;
 const MOBILE_CACHE_CAP = 60;
@@ -50,6 +51,7 @@ export function ScrollSequenceProvider() {
             height={variant.height}
             totalFrames={totalFrames}
           />
+          <IntroOverlay section={manifest.introSection} />
           <CategoryOverlays sections={manifest.categorySections} />
         </>
       ) : null}

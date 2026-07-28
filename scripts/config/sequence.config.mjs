@@ -11,6 +11,12 @@ export const OUTPUT_ROOT = path.resolve(__dirname, "../../public/frames");
 
 export const CLIPS = [
   {
+    id: "intro-entrance",
+    file: "intro-entrance.mp4",
+    kind: "intro",
+    label: "ברוכים הבאים למושל הוילונות",
+  },
+  {
     id: "curtains",
     file: "curtains.mp4",
     kind: "category",
