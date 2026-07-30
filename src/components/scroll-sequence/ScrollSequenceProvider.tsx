@@ -9,8 +9,11 @@ import { ScrollSequenceCanvas } from "@/components/scroll-sequence/ScrollSequenc
 import { CategoryOverlays } from "@/components/category-overlay/CategoryOverlays";
 import { IntroOverlay } from "@/components/intro-overlay/IntroOverlay";
 
-const DESKTOP_CACHE_CAP = 90;
-const MOBILE_CACHE_CAP = 60;
+// Sized to comfortably hold a single transition's full frame range (the
+// largest jumps, e.g. Curtains->Blinds, span ~134 frames) so the whole-range
+// prefetch kicked off at gesture start doesn't get evicted before it's used.
+const DESKTOP_CACHE_CAP = 150;
+const MOBILE_CACHE_CAP = 100;
 const MOBILE_BREAKPOINT = 768;
 
 export function ScrollSequenceProvider() {
@@ -38,7 +41,7 @@ export function ScrollSequenceProvider() {
     cacheCap,
   });
 
-  const { frameIndexRef } = useScrollSequenceController({ trackRef, manifest });
+  const { frameIndexRef } = useScrollSequenceController({ trackRef, manifest, cacheRef });
 
   return (
     <div ref={trackRef} data-testid="scroll-sequence-track" className="scroll-sequence-track">

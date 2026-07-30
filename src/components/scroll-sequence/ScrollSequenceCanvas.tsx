@@ -60,6 +60,7 @@ export function ScrollSequenceCanvas({
       if (cache) {
         if (target !== lastTarget) {
           lastTarget = target;
+          cache.setFocus(target);
           const exact = cache.get(target);
           if (exact) {
             paint(exact, target);

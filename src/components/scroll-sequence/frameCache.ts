@@ -10,18 +10,41 @@ export interface FrameCache {
   get(index: number): ImageBitmap | undefined;
   nearest(index: number): NearestFrame | undefined;
   ensure(index: number, priority?: "high" | "low"): Promise<void>;
+  /** Tells the cache which frame the user is currently at/heading to, so eviction protects it. */
+  setFocus(index: number): void;
   size(): number;
 }
 
 /**
- * Distance-based LRU cache of decoded frame bitmaps.
+ * Picks which cached index to evict when the cache is over capacity: whichever
+ * is farthest (by frame distance) from `focus`. Extracted as a pure function so
+ * the eviction policy is unit-testable without mocking fetch/ImageBitmap.
+ */
+export function selectEvictionIndex(
+  cachedIndices: Iterable<number>,
+  focus: number,
+): number | undefined {
+  let farthest: number | undefined;
+  let farthestDistance = -1;
+  for (const index of cachedIndices) {
+    const distance = Math.abs(index - focus);
+    if (distance > farthestDistance) {
+      farthestDistance = distance;
+      farthest = index;
+    }
+  }
+  return farthest;
+}
+
+/**
+ * Distance-based cache of decoded frame bitmaps, capped at a fixed size.
  *
- * Holding every decoded frame in memory is not viable: ~450 frames at
- * 1280x712 RGBA would be roughly 1.6GB of decoded bitmaps, which can crash
- * mobile browsers well before the network payload is the bottleneck. Capping
- * the in-memory cache (evicting the least-recently-touched entries) keeps
- * memory bounded while the underlying HTTP cache still holds the bytes for
- * fast re-decoding.
+ * Holding every decoded frame in memory is not viable (hundreds of frames at
+ * 1280x712 RGBA would be gigabytes), so eviction must free space when full.
+ * Critically, eviction is based on distance from the current focus frame, not
+ * recency of access — a background loader sweeping sequentially through the
+ * whole sequence must not be able to evict frames near where the user
+ * actually is just because they happen to have been fetched "long ago".
  */
 export function createFrameCache(
   variant: FrameVariant,
@@ -29,17 +52,15 @@ export function createFrameCache(
   cap: number,
 ): FrameCache {
   const cache = new Map<number, ImageBitmap>();
+  let focus = 1;
 
-  function touch(index: number, bitmap: ImageBitmap): void {
-    if (cache.has(index)) {
-      cache.delete(index);
-    }
+  function insert(index: number, bitmap: ImageBitmap): void {
     cache.set(index, bitmap);
     if (cache.size > cap) {
-      const oldestKey = cache.keys().next().value;
-      if (oldestKey !== undefined) {
-        cache.get(oldestKey)?.close();
-        cache.delete(oldestKey);
+      const evictIndex = selectEvictionIndex(cache.keys(), focus);
+      if (evictIndex !== undefined) {
+        cache.get(evictIndex)?.close();
+        cache.delete(evictIndex);
       }
     }
   }
@@ -57,7 +78,7 @@ export function createFrameCache(
         const res = await fetch(url, { priority } as RequestInit);
         const blob = await res.blob();
         const bitmap = await createImageBitmap(blob);
-        touch(index, bitmap);
+        insert(index, bitmap);
       } catch (err) {
         console.error(`Failed to load frame ${index}`, err);
       } finally {
@@ -71,9 +92,7 @@ export function createFrameCache(
 
   return {
     get(index) {
-      const bitmap = cache.get(index);
-      if (bitmap) touch(index, bitmap);
-      return bitmap;
+      return cache.get(index);
     },
     nearest(index) {
       let best: NearestFrame | undefined;
@@ -89,6 +108,9 @@ export function createFrameCache(
     },
     ensure(index, priority = "low") {
       return load(index, priority);
+    },
+    setFocus(index) {
+      focus = index;
     },
     size() {
       return cache.size;

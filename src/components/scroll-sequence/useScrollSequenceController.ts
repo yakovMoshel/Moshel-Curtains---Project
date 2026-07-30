@@ -11,6 +11,7 @@ import {
   resolveStopTransition,
 } from "@/components/scroll-sequence/scrollStops";
 import { frameStore } from "@/components/scroll-sequence/frameStore";
+import type { FrameCache } from "@/components/scroll-sequence/frameCache";
 import type { SequenceManifest } from "@/lib/manifest.types";
 
 if (typeof window !== "undefined") {
@@ -28,11 +29,13 @@ const TOUCH_DIRECTION_THRESHOLD = 5;
 interface UseScrollSequenceControllerOptions {
   trackRef: RefObject<HTMLElement | null>;
   manifest: SequenceManifest | null;
+  cacheRef: RefObject<FrameCache | null>;
 }
 
 export function useScrollSequenceController({
   trackRef,
   manifest,
+  cacheRef,
 }: UseScrollSequenceControllerOptions): { frameIndexRef: RefObject<number> } {
   const frameIndexRef = useRef(1);
 
@@ -80,9 +83,23 @@ export function useScrollSequenceController({
       if (nextIndex === currentStopIndex) return true;
 
       isAnimating = true;
+      const fromFrame = stops[currentStopIndex]!;
       currentStopIndex = nextIndex;
       const targetFrame = stops[nextIndex]!;
       const targetY = frameToScrollY(targetFrame, totalFrames, trigger.start, trigger.end);
+
+      // Request the transition's whole destination range up front, at high priority,
+      // instead of only the reactive ±10 window the canvas requests as its rendered
+      // target moves — that gives the browser the full tween duration as lead time to
+      // fetch+decode ahead of the animation, rather than always chasing a moving target.
+      const cache = cacheRef.current;
+      if (cache) {
+        const rangeStart = Math.min(fromFrame, targetFrame);
+        const rangeEnd = Math.max(fromFrame, targetFrame);
+        for (let frame = rangeStart; frame <= rangeEnd; frame++) {
+          void cache.ensure(frame, "high");
+        }
+      }
 
       gsap.to(window, {
         scrollTo: targetY,
@@ -141,7 +158,7 @@ export function useScrollSequenceController({
       window.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [trackRef, manifest]);
+  }, [trackRef, manifest, cacheRef]);
 
   return { frameIndexRef };
 }
