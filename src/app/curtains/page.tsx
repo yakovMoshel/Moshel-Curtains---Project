@@ -8,9 +8,8 @@ export const metadata: Metadata = {
 
 export default function Curtains() {
   return (
-    <>
-      <CategoryPage category="curtains" />
+    <CategoryPage category="curtains">
       <CurtainStylesTeaser />
-    </>
+    </CategoryPage>
   );
 }

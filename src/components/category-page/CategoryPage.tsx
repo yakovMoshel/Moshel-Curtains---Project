@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -13,9 +13,11 @@ if (typeof window !== "undefined") {
 
 interface CategoryPageProps {
   category: string;
+  /** Rendered between the hero and the copy/details section. */
+  children?: ReactNode;
 }
 
-export function CategoryPage({ category }: CategoryPageProps) {
+export function CategoryPage({ category, children }: CategoryPageProps) {
   const heroTextRef = useRef<HTMLDivElement>(null);
   const detailImageRef = useRef<HTMLDivElement>(null);
 
@@ -80,6 +82,8 @@ export function CategoryPage({ category }: CategoryPageProps) {
           <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl">{content.heading}</h1>
         </div>
       </div>
+
+      {children}
 
       <div className="mx-auto flex max-w-3xl flex-col gap-10 px-8 py-16 sm:px-16">
         <p className="max-w-xl text-lg text-stone-700">{content.copy}</p>
