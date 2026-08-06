@@ -1,19 +1,22 @@
 "use client";
 
-import { ColorSizeStep } from "@/components/configurator/ColorSizeStep";
+import { BlindColorSizeStep } from "@/components/configurator/BlindColorSizeStep";
+import { BlindSummaryStep } from "@/components/configurator/BlindSummaryStep";
 import { ProgressIndicator } from "@/components/configurator/ProgressIndicator";
-import { SummaryStep } from "@/components/configurator/SummaryStep";
 import { TypeStep } from "@/components/configurator/TypeStep";
-import { STEP_COUNT, useConfiguratorState } from "@/components/configurator/useConfiguratorState";
+import {
+  BLIND_STEP_COUNT,
+  useBlindConfiguratorState,
+} from "@/components/configurator/useBlindConfiguratorState";
 import { useStepTransition } from "@/components/configurator/useStepTransition";
 import { validateSize } from "@/components/configurator/validation";
-import { curtainTypes } from "@/lib/data/curtain-products";
+import { blindTypes } from "@/lib/data/blind-products";
 
 const STEP_LABELS = ["סוג", "צבע ומידות", "סיכום"];
 
-export function ConfiguratorWizard() {
+export function BlindConfiguratorWizard() {
   const { step, selections, selectType, selectColor, setWidth, setHeight, goNext, goBack } =
-    useConfiguratorState();
+    useBlindConfiguratorState();
   const contentRef = useStepTransition(step);
 
   const sizeErrors = validateSize(selections.width, selections.height);
@@ -26,14 +29,18 @@ export function ConfiguratorWizard() {
   return (
     <main className="min-h-screen bg-curtain-cream">
       <div className="mx-auto flex max-w-3xl flex-col gap-10 px-8 py-16 sm:px-16">
-        <ProgressIndicator step={step} stepCount={STEP_COUNT} stepLabel={STEP_LABELS[step] ?? ""} />
+        <ProgressIndicator
+          step={step}
+          stepCount={BLIND_STEP_COUNT}
+          stepLabel={STEP_LABELS[step] ?? ""}
+        />
 
         <div ref={contentRef}>
           {step === 0 && (
-            <TypeStep items={curtainTypes} selectedId={selections.typeId} onSelect={selectType} />
+            <TypeStep items={blindTypes} selectedId={selections.typeId} onSelect={selectType} />
           )}
           {step === 1 && (
-            <ColorSizeStep
+            <BlindColorSizeStep
               selectedColorId={selections.colorId}
               onSelectColor={selectColor}
               width={selections.width}
@@ -43,7 +50,7 @@ export function ConfiguratorWizard() {
               onHeightChange={setHeight}
             />
           )}
-          {step === 2 && <SummaryStep selections={selections} />}
+          {step === 2 && <BlindSummaryStep selections={selections} />}
         </div>
 
         <div className="flex justify-between">
@@ -55,7 +62,7 @@ export function ConfiguratorWizard() {
           >
             הקודם
           </button>
-          {step < STEP_COUNT - 1 && (
+          {step < BLIND_STEP_COUNT - 1 && (
             <button
               type="button"
               onClick={goNext}

@@ -1,49 +1,54 @@
 "use client";
 
-import { ColorSizeStep } from "@/components/configurator/ColorSizeStep";
 import { ProgressIndicator } from "@/components/configurator/ProgressIndicator";
-import { SummaryStep } from "@/components/configurator/SummaryStep";
 import { TypeStep } from "@/components/configurator/TypeStep";
-import { STEP_COUNT, useConfiguratorState } from "@/components/configurator/useConfiguratorState";
+import { UpholsteryColorPieceStep } from "@/components/configurator/UpholsteryColorPieceStep";
+import { UpholsterySummaryStep } from "@/components/configurator/UpholsterySummaryStep";
+import {
+  UPHOLSTERY_STEP_COUNT,
+  useUpholsteryConfiguratorState,
+} from "@/components/configurator/useUpholsteryConfiguratorState";
 import { useStepTransition } from "@/components/configurator/useStepTransition";
-import { validateSize } from "@/components/configurator/validation";
-import { curtainTypes } from "@/lib/data/curtain-products";
+import { upholsteryTypes } from "@/lib/data/upholstery-products";
 
-const STEP_LABELS = ["סוג", "צבע ומידות", "סיכום"];
+const STEP_LABELS = ["סוג", "צבע ופריט", "סיכום"];
 
-export function ConfiguratorWizard() {
-  const { step, selections, selectType, selectColor, setWidth, setHeight, goNext, goBack } =
-    useConfiguratorState();
+export function UpholsteryConfiguratorWizard() {
+  const { step, selections, selectType, selectColor, selectPiece, goNext, goBack } =
+    useUpholsteryConfiguratorState();
   const contentRef = useStepTransition(step);
-
-  const sizeErrors = validateSize(selections.width, selections.height);
 
   const canGoNext =
     (step === 0 && selections.typeId !== null) ||
-    (step === 1 && selections.colorId !== null && Object.keys(sizeErrors).length === 0) ||
+    (step === 1 && selections.colorId !== null && selections.furniturePieceId !== null) ||
     step === 2;
 
   return (
     <main className="min-h-screen bg-curtain-cream">
       <div className="mx-auto flex max-w-3xl flex-col gap-10 px-8 py-16 sm:px-16">
-        <ProgressIndicator step={step} stepCount={STEP_COUNT} stepLabel={STEP_LABELS[step] ?? ""} />
+        <ProgressIndicator
+          step={step}
+          stepCount={UPHOLSTERY_STEP_COUNT}
+          stepLabel={STEP_LABELS[step] ?? ""}
+        />
 
         <div ref={contentRef}>
           {step === 0 && (
-            <TypeStep items={curtainTypes} selectedId={selections.typeId} onSelect={selectType} />
-          )}
-          {step === 1 && (
-            <ColorSizeStep
-              selectedColorId={selections.colorId}
-              onSelectColor={selectColor}
-              width={selections.width}
-              height={selections.height}
-              errors={sizeErrors}
-              onWidthChange={setWidth}
-              onHeightChange={setHeight}
+            <TypeStep
+              items={upholsteryTypes}
+              selectedId={selections.typeId}
+              onSelect={selectType}
             />
           )}
-          {step === 2 && <SummaryStep selections={selections} />}
+          {step === 1 && (
+            <UpholsteryColorPieceStep
+              selectedColorId={selections.colorId}
+              onSelectColor={selectColor}
+              selectedPieceId={selections.furniturePieceId}
+              onSelectPiece={selectPiece}
+            />
+          )}
+          {step === 2 && <UpholsterySummaryStep selections={selections} />}
         </div>
 
         <div className="flex justify-between">
@@ -55,7 +60,7 @@ export function ConfiguratorWizard() {
           >
             הקודם
           </button>
-          {step < STEP_COUNT - 1 && (
+          {step < UPHOLSTERY_STEP_COUNT - 1 && (
             <button
               type="button"
               onClick={goNext}

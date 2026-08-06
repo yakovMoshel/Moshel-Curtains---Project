@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { validateDimension, validateSize } from "@/components/configurator/validation";
+import {
+  validateDimension,
+  validateDimensions,
+  validateSize,
+} from "@/components/configurator/validation";
 
 describe("validateDimension", () => {
   it("requires a value", () => {
@@ -20,6 +24,36 @@ describe("validateDimension", () => {
 
   it("accepts values within range", () => {
     expect(validateDimension("150")).toBeUndefined();
+  });
+
+  it("supports custom min/max bounds", () => {
+    expect(validateDimension("70", 80, 200)).toContain("80");
+    expect(validateDimension("250", 80, 200)).toContain("200");
+    expect(validateDimension("120", 80, 200)).toBeUndefined();
+  });
+});
+
+describe("validateDimensions", () => {
+  it("validates the round tablecloth diameter range", () => {
+    const errors = validateDimensions({ diameter: "70" }, { diameter: { min: 80, max: 200 } });
+    expect(errors.diameter).toContain("80");
+  });
+
+  it("validates the rectangular tablecloth length/width ranges independently", () => {
+    const errors = validateDimensions(
+      { length: "310", width: "100" },
+      { length: { min: 80, max: 300 }, width: { min: 60, max: 160 } },
+    );
+    expect(errors.length).toContain("300");
+    expect(errors.width).toBeUndefined();
+  });
+
+  it("returns no errors when all fields are within their ranges", () => {
+    const errors = validateDimensions(
+      { length: "150", width: "100" },
+      { length: { min: 80, max: 300 }, width: { min: 60, max: 160 } },
+    );
+    expect(errors).toEqual({});
   });
 });
 

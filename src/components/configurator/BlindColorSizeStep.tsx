@@ -1,12 +1,12 @@
-import { curtainColors } from "@/lib/data/curtain-products";
-import type { CurtainColorId } from "@/lib/data/curtain-products";
+import { blindColors } from "@/lib/data/blind-products";
+import type { BlindColorId } from "@/lib/data/blind-products";
 import type { SizeErrors } from "@/components/configurator/validation";
 import { ColorSwatches } from "@/components/configurator/ColorSwatches";
 import { SizeFields } from "@/components/configurator/SizeFields";
 
-interface ColorSizeStepProps {
-  selectedColorId: CurtainColorId | null;
-  onSelectColor: (colorId: CurtainColorId) => void;
+interface BlindColorSizeStepProps {
+  selectedColorId: BlindColorId | null;
+  onSelectColor: (colorId: BlindColorId) => void;
   width: string;
   height: string;
   errors: SizeErrors;
@@ -14,7 +14,7 @@ interface ColorSizeStepProps {
   onHeightChange: (height: string) => void;
 }
 
-export function ColorSizeStep({
+export function BlindColorSizeStep({
   selectedColorId,
   onSelectColor,
   width,
@@ -22,7 +22,7 @@ export function ColorSizeStep({
   errors,
   onWidthChange,
   onHeightChange,
-}: ColorSizeStepProps) {
+}: BlindColorSizeStepProps) {
   return (
     <div>
       <p className="mb-2 text-sm font-medium tracking-[0.2em] text-curtain-taupe uppercase">
@@ -32,7 +32,7 @@ export function ColorSizeStep({
         בחרו צבע ומידות
       </h2>
 
-      <ColorSwatches colors={curtainColors} selectedId={selectedColorId} onSelect={onSelectColor} />
+      <ColorSwatches colors={blindColors} selectedId={selectedColorId} onSelect={onSelectColor} />
 
       <SizeFields
         fields={[
