@@ -60,7 +60,7 @@ export function CategoryPage({ category }: CategoryPageProps) {
   if (!content) return null;
 
   return (
-    <main>
+    <main className="bg-white">
       <div className="relative h-[70vh] min-h-[420px] w-full">
         <Image
           src={content.heroImage}
