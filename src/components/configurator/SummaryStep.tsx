@@ -16,8 +16,14 @@ export function SummaryStep({ selections }: SummaryStepProps) {
 
   return (
     <div>
-      <h2 className="mb-6 text-xl font-semibold text-stone-900">סיכום ההזמנה</h2>
-      <div className="flex max-w-md flex-col gap-4 rounded-sm border border-stone-200 p-6">
+      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">
+        שלב שלישי
+      </p>
+      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+        סיכום ההזמנה
+      </h2>
+
+      <div className="flex max-w-md flex-col gap-5 rounded-sm border border-stone-200 bg-stone-50 p-8">
         <div className="flex justify-between">
           <span className="text-sm text-stone-600">סוג</span>
           <span className="font-medium text-stone-900">{type?.label}</span>
@@ -43,12 +49,12 @@ export function SummaryStep({ selections }: SummaryStepProps) {
       </div>
 
       {/* Future phase: an "AI visualization" option will be added alongside the WhatsApp button below. */}
-      <div className="mt-6 flex max-w-md flex-col gap-3">
+      <div className="mt-8 flex max-w-md flex-col gap-3">
         <a
           href={whatsAppHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-sm bg-stone-900 px-6 py-3 text-center text-sm font-medium text-stone-50"
+          className="rounded-sm bg-stone-900 px-6 py-4 text-center text-sm font-medium text-stone-50 transition-transform duration-300 hover:scale-[1.02]"
         >
           שלח הזמנה בוואטסאפ
         </a>

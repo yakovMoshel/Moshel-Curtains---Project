@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 import { curtainColors } from "@/lib/data/curtain-products";
 import type { CurtainColorId } from "@/lib/data/curtain-products";
 import type { SizeErrors } from "@/components/configurator/validation";
@@ -21,11 +23,26 @@ export function ColorSizeStep({
   onWidthChange,
   onHeightChange,
 }: ColorSizeStepProps) {
+  const swatchesRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const swatches = swatchesRef.current?.children;
+    if (!swatches) return;
+    gsap.fromTo(
+      Array.from(swatches),
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.4, ease: "sine.inOut", stagger: 0.04 },
+    );
+  }, []);
+
   return (
     <div>
-      <h2 className="mb-6 text-xl font-semibold text-stone-900">בחרו צבע ומידות</h2>
+      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">שלב שני</p>
+      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+        בחרו צבע ומידות
+      </h2>
 
-      <div className="flex flex-wrap gap-6">
+      <div ref={swatchesRef} className="flex flex-wrap gap-6">
         {curtainColors.map((color) => {
           const isSelected = color.id === selectedColorId;
           return (
@@ -35,11 +52,11 @@ export function ColorSizeStep({
               onClick={() => onSelectColor(color.id)}
               aria-pressed={isSelected}
               aria-label={color.label}
-              className="flex flex-col items-center gap-2"
+              className="flex flex-col items-center gap-2 transition-transform duration-300 hover:scale-105"
             >
               <span
                 style={{ backgroundColor: color.hex }}
-                className={`flex h-10 w-10 items-center justify-center rounded-full border border-stone-300 ${
+                className={`flex h-12 w-12 items-center justify-center rounded-full border border-stone-300 ${
                   isSelected ? "ring-2 ring-stone-900 ring-offset-2" : ""
                 }`}
               >
@@ -61,7 +78,9 @@ export function ColorSizeStep({
         })}
       </div>
 
-      <h3 className="mt-8 mb-4 text-sm font-medium text-stone-700">מידות מדויקות</h3>
+      <p className="mt-10 mb-4 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">
+        מידות מדויקות
+      </p>
       <div className="flex max-w-md flex-col gap-6">
         <div className="flex flex-col gap-2">
           <label htmlFor="width" className="text-sm font-medium text-stone-700">
