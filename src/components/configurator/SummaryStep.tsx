@@ -16,33 +16,33 @@ export function SummaryStep({ selections }: SummaryStepProps) {
 
   return (
     <div>
-      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">
+      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-curtain-taupe uppercase">
         שלב שלישי
       </p>
-      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-curtain-espresso sm:text-4xl">
         סיכום ההזמנה
       </h2>
 
-      <div className="flex max-w-md flex-col gap-5 rounded-sm border border-stone-200 bg-stone-50 p-8">
+      <div className="flex max-w-md flex-col gap-5 rounded-sm border border-curtain-tan bg-curtain-beige p-8">
         <div className="flex justify-between">
-          <span className="text-sm text-stone-600">סוג</span>
-          <span className="font-medium text-stone-900">{type?.label}</span>
+          <span className="text-sm text-curtain-taupe">סוג</span>
+          <span className="font-medium text-curtain-espresso">{type?.label}</span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-sm text-stone-600">צבע</span>
-          <span className="flex items-center gap-2 font-medium text-stone-900">
+          <span className="text-sm text-curtain-taupe">צבע</span>
+          <span className="flex items-center gap-2 font-medium text-curtain-espresso">
             {color?.label}
             {color && (
               <span
                 style={{ backgroundColor: color.hex }}
-                className="h-5 w-5 rounded-full border border-stone-300"
+                className="h-5 w-5 rounded-full border border-curtain-tan"
               />
             )}
           </span>
         </div>
         <div className="flex justify-between">
-          <span className="text-sm text-stone-600">מידות</span>
-          <span className="font-medium text-stone-900">
+          <span className="text-sm text-curtain-taupe">מידות</span>
+          <span className="font-medium text-curtain-espresso">
             {selections.width} ס&quot;מ (רוחב) × {selections.height} ס&quot;מ (גובה)
           </span>
         </div>
@@ -54,7 +54,7 @@ export function SummaryStep({ selections }: SummaryStepProps) {
           href={whatsAppHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-sm bg-stone-900 px-6 py-4 text-center text-sm font-medium text-stone-50 transition-transform duration-300 hover:scale-[1.02]"
+          className="rounded-sm bg-curtain-espresso px-6 py-4 text-center text-sm font-medium text-curtain-cream transition-transform duration-300 hover:scale-[1.02]"
         >
           שלח הזמנה בוואטסאפ
         </a>

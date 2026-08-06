@@ -23,10 +23,10 @@ export function TypeStep({ selectedTypeId, onSelect }: TypeStepProps) {
 
   return (
     <div>
-      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">
+      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-curtain-taupe uppercase">
         שלב ראשון
       </p>
-      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-curtain-espresso sm:text-4xl">
         בחרו את הסגנון שלכם
       </h2>
       <div ref={cardsRef} className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -38,12 +38,12 @@ export function TypeStep({ selectedTypeId, onSelect }: TypeStepProps) {
               type="button"
               onClick={() => onSelect(type.id)}
               aria-pressed={isSelected}
-              className={`flex flex-col gap-2 rounded-sm border p-6 text-right transition-[transform,border-color] duration-300 hover:scale-[1.02] ${
-                isSelected ? "border-2 border-stone-900" : "border border-stone-200"
+              className={`curtain-weave flex flex-col gap-2 rounded-sm border bg-linear-to-br from-curtain-cream to-curtain-beige p-6 text-right transition-[transform,border-color] duration-300 hover:scale-[1.02] ${
+                isSelected ? "border-2 border-curtain-espresso" : "border-curtain-tan"
               }`}
             >
-              <span className="text-lg font-medium text-stone-900">{type.label}</span>
-              <span className="text-sm text-stone-600">{type.description}</span>
+              <span className="text-lg font-medium text-curtain-espresso">{type.label}</span>
+              <span className="text-sm text-curtain-taupe">{type.description}</span>
             </button>
           );
         })}

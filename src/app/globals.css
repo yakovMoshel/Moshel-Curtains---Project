@@ -3,12 +3,30 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Warm palette for the curtains configurator, drawn from the site's own
+     product photography (linen, sunset light, wood) instead of the
+     neutral stone-* scale used elsewhere. Kept as its own token set so it
+     doesn't affect --background/--foreground used by the rest of the site. */
+  --curtain-cream: #f7f0e3;
+  --curtain-beige: #ede0c8;
+  --curtain-tan: #d9c7a8;
+  --curtain-gold: #c9a227;
+  --curtain-espresso: #3a2e22;
+  --curtain-taupe: #8a7860;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-rubik);
+
+  --color-curtain-cream: var(--curtain-cream);
+  --color-curtain-beige: var(--curtain-beige);
+  --color-curtain-tan: var(--curtain-tan);
+  --color-curtain-gold: var(--curtain-gold);
+  --color-curtain-espresso: var(--curtain-espresso);
+  --color-curtain-taupe: var(--curtain-taupe);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -27,6 +45,18 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* Fine diagonal hairlines evoking woven linen thread, used as the
+   configurator's one signature texture on the type-selection cards. */
+.curtain-weave {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0,
+    transparent 5px,
+    rgb(58 46 34 / 5%) 5px,
+    rgb(58 46 34 / 5%) 6px
+  );
 }
 
 .scroll-sequence-track {

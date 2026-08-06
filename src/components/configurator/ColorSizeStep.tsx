@@ -37,8 +37,10 @@ export function ColorSizeStep({
 
   return (
     <div>
-      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">שלב שני</p>
-      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
+      <p className="mb-2 text-sm font-medium tracking-[0.2em] text-curtain-taupe uppercase">
+        שלב שני
+      </p>
+      <h2 className="mb-8 text-2xl font-semibold tracking-tight text-curtain-espresso sm:text-4xl">
         בחרו צבע ומידות
       </h2>
 
@@ -56,15 +58,22 @@ export function ColorSizeStep({
             >
               <span
                 style={{ backgroundColor: color.hex }}
-                className={`flex h-12 w-12 items-center justify-center rounded-full border border-stone-300 ${
-                  isSelected ? "ring-2 ring-stone-900 ring-offset-2" : ""
+                className={`flex h-12 w-12 items-center justify-center rounded-full border border-curtain-tan ${
+                  isSelected
+                    ? "ring-2 ring-curtain-espresso ring-offset-2 ring-offset-curtain-cream"
+                    : ""
                 }`}
               >
                 {isSelected && (
-                  <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    className="mix-blend-difference h-4 w-4"
+                    aria-hidden="true"
+                  >
                     <path
                       d="M4 10l4 4 8-8"
-                      stroke="#1c1917"
+                      stroke="white"
                       strokeWidth="2.5"
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -72,18 +81,18 @@ export function ColorSizeStep({
                   </svg>
                 )}
               </span>
-              <span className="text-sm text-stone-600">{color.label}</span>
+              <span className="text-sm text-curtain-taupe">{color.label}</span>
             </button>
           );
         })}
       </div>
 
-      <p className="mt-10 mb-4 text-sm font-medium tracking-[0.2em] text-stone-500 uppercase">
+      <p className="mt-10 mb-4 text-sm font-medium tracking-[0.2em] text-curtain-taupe uppercase">
         מידות מדויקות
       </p>
       <div className="flex max-w-md flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <label htmlFor="width" className="text-sm font-medium text-stone-700">
+          <label htmlFor="width" className="text-sm font-medium text-curtain-espresso">
             רוחב (ס&quot;מ)
           </label>
           <input
@@ -91,7 +100,7 @@ export function ColorSizeStep({
             type="number"
             value={width}
             onChange={(e) => onWidthChange(e.target.value)}
-            className="rounded-sm border border-stone-300 px-4 py-2"
+            className="rounded-sm border border-curtain-tan bg-curtain-cream px-4 py-2 text-curtain-espresso"
           />
           {errors.width && (
             <p role="alert" className="text-sm text-red-700">
@@ -101,7 +110,7 @@ export function ColorSizeStep({
         </div>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="height" className="text-sm font-medium text-stone-700">
+          <label htmlFor="height" className="text-sm font-medium text-curtain-espresso">
             גובה (ס&quot;מ)
           </label>
           <input
@@ -109,7 +118,7 @@ export function ColorSizeStep({
             type="number"
             value={height}
             onChange={(e) => onHeightChange(e.target.value)}
-            className="rounded-sm border border-stone-300 px-4 py-2"
+            className="rounded-sm border border-curtain-tan bg-curtain-cream px-4 py-2 text-curtain-espresso"
           />
           {errors.height && (
             <p role="alert" className="text-sm text-red-700">
