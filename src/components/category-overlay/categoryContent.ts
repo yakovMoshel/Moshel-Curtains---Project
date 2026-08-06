@@ -6,6 +6,8 @@ export interface CategoryContent {
   href: string;
   heroImage: string;
   detailImage: string;
+  /** PLACEHOLDER copy pending client confirmation — 2–3 short, specific differentiators. */
+  highlights: string[];
 }
 
 export const CATEGORY_CONTENT: Record<string, CategoryContent> = {
@@ -17,6 +19,7 @@ export const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     href: "/curtains",
     heroImage: "/images/stills/curtains-wide.webp",
     detailImage: "/images/stills/curtains-detail.webp",
+    highlights: ["תפירה לפי מידות מדויקות שלכם", "מגוון בדים ודוגמאות", "ייעוץ אישי בבית שלכם"],
   },
   blinds: {
     heading: "תריסים",
@@ -26,6 +29,7 @@ export const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     href: "/blinds",
     heroImage: "/images/stills/blinds-wide.webp",
     detailImage: "/images/stills/blinds-detail.webp",
+    highlights: ["התאמה מדויקת לכל חלון", "עץ, אלומיניום ובד", "התקנה מקצועית עד הבית"],
   },
   upholstery: {
     heading: "ריפוד",
@@ -35,6 +39,7 @@ export const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     href: "/upholstery",
     heroImage: "/images/stills/upholstery-wide.webp",
     detailImage: "/images/stills/upholstery-detail.webp",
+    highlights: ["ריפוד מחדש לרהיטים קיימים", "מבחר בדים עמידים", "עבודת יד מוקפדת"],
   },
   tablecloths: {
     heading: "מפות",
@@ -44,5 +49,10 @@ export const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     href: "/tablecloths",
     heroImage: "/images/stills/tablecloths-wide.webp",
     detailImage: "/images/stills/tablecloths-detail.webp",
+    highlights: [
+      "מידות מותאמות לכל שולחן",
+      "בדים איכותיים וקלים לתחזוקה",
+      "עיצוב לכל אירוע ולכל יום",
+    ],
   },
 };
