@@ -39,8 +39,6 @@ describe("AiVisualizationPanel", () => {
       }),
     );
 
-    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
-
     render(
       <AiVisualizationPanel
         selection={selection}
@@ -58,17 +56,13 @@ describe("AiVisualizationPanel", () => {
       expect(screen.getByRole("link", { name: "הורד תמונה" })).toBeInTheDocument();
     });
 
-    // The plain order link is hidden once a result is showing — only the
-    // result's own WhatsApp control (a button, since it drives Web Share
-    // with a wa.me fallback) should remain.
-    expect(screen.queryByRole("link", { name: "שלח הזמנה בוואטסאפ" })).not.toBeInTheDocument();
-    const shareButton = screen.getByRole("button", { name: "שלח הזמנה בוואטסאפ" });
-
-    // jsdom has no navigator.share, so clicking falls back to opening wa.me
-    // with the attach-instruction line appended.
-    await user.click(shareButton);
-    await waitFor(() => expect(openSpy).toHaveBeenCalled());
-    const [href] = openSpy.mock.calls[0] as [string];
+    // Only one WhatsApp control should be visible once a result is showing —
+    // the plain order link is hidden and replaced by the result's own link,
+    // which points straight at the business number with the attach-instruction
+    // line appended.
+    const whatsAppLinks = screen.getAllByRole("link", { name: "שלח הזמנה בוואטסאפ" });
+    expect(whatsAppLinks).toHaveLength(1);
+    const href = whatsAppLinks[0]?.getAttribute("href") ?? "";
     expect(decodeURIComponent(href)).toContain("הודעת הזמנה");
     expect(decodeURIComponent(href)).toContain("נא לצרף אותה להודעה");
   });

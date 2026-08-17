@@ -21,28 +21,8 @@ export function VisualizationResult({
 }: VisualizationResultProps) {
   const [expandedImage, setExpandedImage] = useState<{ src: string; alt: string } | null>(null);
 
-  async function handleWhatsAppShare() {
-    if (typeof navigator !== "undefined" && "share" in navigator && "canShare" in navigator) {
-      try {
-        const blob = await (await fetch(resultImageDataUrl)).blob();
-        const file = new File([blob], "moshel-visualization.png", { type: blob.type });
-
-        if (navigator.canShare({ files: [file] })) {
-          await navigator.share({ files: [file], text: whatsAppOrderMessage });
-          return;
-        }
-      } catch (err) {
-        if (err instanceof Error && err.name === "AbortError") return;
-      }
-    }
-
-    const messageWithAttachInstruction = `${whatsAppOrderMessage}\n\n${ATTACH_INSTRUCTION}`;
-    window.open(
-      buildWhatsAppUrl(WHATSAPP_PHONE_LOCAL, messageWithAttachInstruction),
-      "_blank",
-      "noopener,noreferrer",
-    );
-  }
+  const messageWithAttachInstruction = `${whatsAppOrderMessage}\n\n${ATTACH_INSTRUCTION}`;
+  const whatsAppHref = buildWhatsAppUrl(WHATSAPP_PHONE_LOCAL, messageWithAttachInstruction);
 
   return (
     <div className="flex flex-col gap-4">
@@ -89,13 +69,14 @@ export function VisualizationResult({
         >
           הורד תמונה
         </a>
-        <button
-          type="button"
-          onClick={handleWhatsAppShare}
+        <a
+          href={whatsAppHref}
+          target="_blank"
+          rel="noopener noreferrer"
           className="rounded-sm bg-curtain-espresso px-6 py-4 text-center text-sm font-medium text-curtain-cream transition-transform duration-300 hover:scale-[1.02]"
         >
           שלח הזמנה בוואטסאפ
-        </button>
+        </a>
         <button
           type="button"
           onClick={onReset}
