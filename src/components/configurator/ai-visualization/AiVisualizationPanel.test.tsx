@@ -39,7 +39,15 @@ describe("AiVisualizationPanel", () => {
       }),
     );
 
-    render(<AiVisualizationPanel selection={selection} whatsAppOrderMessage="הודעת הזמנה" />);
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+
+    render(
+      <AiVisualizationPanel
+        selection={selection}
+        whatsAppOrderMessage="הודעת הזמנה"
+        whatsAppHref="https://wa.me/972526286837?text=הודעת+הזמנה"
+      />,
+    );
 
     await user.click(screen.getByRole("button", { name: "רוצה לראות איך זה ייראה אצלכם בבית?" }));
 
@@ -49,7 +57,20 @@ describe("AiVisualizationPanel", () => {
     await waitFor(() => {
       expect(screen.getByRole("link", { name: "הורד תמונה" })).toBeInTheDocument();
     });
-    expect(screen.getByRole("link", { name: "שלח הזמנה בוואטסאפ" })).toBeInTheDocument();
+
+    // The plain order link is hidden once a result is showing — only the
+    // result's own WhatsApp control (a button, since it drives Web Share
+    // with a wa.me fallback) should remain.
+    expect(screen.queryByRole("link", { name: "שלח הזמנה בוואטסאפ" })).not.toBeInTheDocument();
+    const shareButton = screen.getByRole("button", { name: "שלח הזמנה בוואטסאפ" });
+
+    // jsdom has no navigator.share, so clicking falls back to opening wa.me
+    // with the attach-instruction line appended.
+    await user.click(shareButton);
+    await waitFor(() => expect(openSpy).toHaveBeenCalled());
+    const [href] = openSpy.mock.calls[0] as [string];
+    expect(decodeURIComponent(href)).toContain("הודעת הזמנה");
+    expect(decodeURIComponent(href)).toContain("נא לצרף אותה להודעה");
   });
 
   it("shows an error message when the upload fails", async () => {
@@ -63,7 +84,13 @@ describe("AiVisualizationPanel", () => {
       }),
     );
 
-    render(<AiVisualizationPanel selection={selection} whatsAppOrderMessage="הודעת הזמנה" />);
+    render(
+      <AiVisualizationPanel
+        selection={selection}
+        whatsAppOrderMessage="הודעת הזמנה"
+        whatsAppHref="https://wa.me/972526286837?text=הודעת+הזמנה"
+      />,
+    );
 
     await user.click(screen.getByRole("button", { name: "רוצה לראות איך זה ייראה אצלכם בבית?" }));
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
@@ -72,5 +99,8 @@ describe("AiVisualizationPanel", () => {
     await waitFor(() => {
       expect(screen.getByRole("alert")).toHaveTextContent("אירעה שגיאה");
     });
+
+    // The plain order link should still be visible — only success hides it.
+    expect(screen.getByRole("link", { name: "שלח הזמנה בוואטסאפ" })).toBeInTheDocument();
   });
 });

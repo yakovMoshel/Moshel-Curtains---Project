@@ -10,11 +10,13 @@ import type { VisualizationSelectionSummary } from "@/components/configurator/ai
 interface AiVisualizationPanelProps {
   selection: VisualizationSelectionSummary;
   whatsAppOrderMessage: string;
+  whatsAppHref: string;
 }
 
 export function AiVisualizationPanel({
   selection,
   whatsAppOrderMessage,
+  whatsAppHref,
 }: AiVisualizationPanelProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { status, originalPreviewUrl, resultImageDataUrl, error, selectFile, reset } =
@@ -23,7 +25,18 @@ export function AiVisualizationPanel({
   const isBusy = status === "validating" || status === "uploading" || status === "processing";
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="mt-8 flex max-w-md flex-col gap-3">
+      {status !== "success" && (
+        <a
+          href={whatsAppHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-sm bg-curtain-espresso px-6 py-4 text-center text-sm font-medium text-curtain-cream transition-transform duration-300 hover:scale-[1.02]"
+        >
+          שלח הזמנה בוואטסאפ
+        </a>
+      )}
+
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}

@@ -59,17 +59,11 @@ export function TableclothSummaryStep({ selections }: TableclothSummaryStepProps
         </div>
       </div>
 
-      <div className="mt-8 flex max-w-md flex-col gap-3">
-        <a
-          href={whatsAppHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-sm bg-curtain-espresso px-6 py-4 text-center text-sm font-medium text-curtain-cream transition-transform duration-300 hover:scale-[1.02]"
-        >
-          שלח הזמנה בוואטסאפ
-        </a>
-        <AiVisualizationPanel selection={visualizationSelection} whatsAppOrderMessage={message} />
-      </div>
+      <AiVisualizationPanel
+        selection={visualizationSelection}
+        whatsAppOrderMessage={message}
+        whatsAppHref={whatsAppHref}
+      />
     </div>
   );
 }
