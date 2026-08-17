@@ -1,5 +1,7 @@
 import { buildWhatsAppUrl, WHATSAPP_PHONE_LOCAL } from "@/components/whatsapp/whatsappLink";
 import { buildTableclothWhatsAppOrderMessage } from "@/components/configurator/buildTableclothOrderMessage";
+import { AiVisualizationPanel } from "@/components/configurator/ai-visualization";
+import type { VisualizationSelectionSummary } from "@/components/configurator/ai-visualization";
 import { tableclothColors, tableclothTypes } from "@/lib/data/tablecloth-products";
 import type { TableclothConfiguratorSelections } from "@/components/configurator/useTableclothConfiguratorState";
 
@@ -13,6 +15,12 @@ export function TableclothSummaryStep({ selections }: TableclothSummaryStepProps
 
   const message = buildTableclothWhatsAppOrderMessage(selections);
   const whatsAppHref = buildWhatsAppUrl(WHATSAPP_PHONE_LOCAL, message);
+
+  const visualizationSelection: VisualizationSelectionSummary = {
+    category: "tablecloths",
+    typeLabel: type?.label ?? "",
+    colorLabel: color?.label ?? "",
+  };
 
   const dimensionsLabel =
     selections.shapeId === "rectangular"
@@ -60,6 +68,7 @@ export function TableclothSummaryStep({ selections }: TableclothSummaryStepProps
         >
           שלח הזמנה בוואטסאפ
         </a>
+        <AiVisualizationPanel selection={visualizationSelection} whatsAppOrderMessage={message} />
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import { buildWhatsAppUrl, WHATSAPP_PHONE_LOCAL } from "@/components/whatsapp/whatsappLink";
 import { buildUpholsteryWhatsAppOrderMessage } from "@/components/configurator/buildUpholsteryOrderMessage";
+import { AiVisualizationPanel } from "@/components/configurator/ai-visualization";
+import type { VisualizationSelectionSummary } from "@/components/configurator/ai-visualization";
 import { furniturePieces, upholsteryColors, upholsteryTypes } from "@/lib/data/upholstery-products";
 import type { UpholsteryConfiguratorSelections } from "@/components/configurator/useUpholsteryConfiguratorState";
 
@@ -14,6 +16,13 @@ export function UpholsterySummaryStep({ selections }: UpholsterySummaryStepProps
 
   const message = buildUpholsteryWhatsAppOrderMessage(selections);
   const whatsAppHref = buildWhatsAppUrl(WHATSAPP_PHONE_LOCAL, message);
+
+  const visualizationSelection: VisualizationSelectionSummary = {
+    category: "upholstery",
+    typeLabel: type?.label ?? "",
+    colorLabel: color?.label ?? "",
+    extraLabel: piece?.label,
+  };
 
   return (
     <div>
@@ -56,6 +65,7 @@ export function UpholsterySummaryStep({ selections }: UpholsterySummaryStepProps
         >
           שלח הזמנה בוואטסאפ
         </a>
+        <AiVisualizationPanel selection={visualizationSelection} whatsAppOrderMessage={message} />
       </div>
     </div>
   );

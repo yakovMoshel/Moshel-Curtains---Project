@@ -1,5 +1,7 @@
 import { buildWhatsAppUrl, WHATSAPP_PHONE_LOCAL } from "@/components/whatsapp/whatsappLink";
 import { buildBlindWhatsAppOrderMessage } from "@/components/configurator/buildBlindOrderMessage";
+import { AiVisualizationPanel } from "@/components/configurator/ai-visualization";
+import type { VisualizationSelectionSummary } from "@/components/configurator/ai-visualization";
 import { blindColors, blindTypes } from "@/lib/data/blind-products";
 import type { BlindConfiguratorSelections } from "@/components/configurator/useBlindConfiguratorState";
 
@@ -13,6 +15,12 @@ export function BlindSummaryStep({ selections }: BlindSummaryStepProps) {
 
   const message = buildBlindWhatsAppOrderMessage(selections);
   const whatsAppHref = buildWhatsAppUrl(WHATSAPP_PHONE_LOCAL, message);
+
+  const visualizationSelection: VisualizationSelectionSummary = {
+    category: "blinds",
+    typeLabel: type?.label ?? "",
+    colorLabel: color?.label ?? "",
+  };
 
   return (
     <div>
@@ -57,6 +65,7 @@ export function BlindSummaryStep({ selections }: BlindSummaryStepProps) {
         >
           שלח הזמנה בוואטסאפ
         </a>
+        <AiVisualizationPanel selection={visualizationSelection} whatsAppOrderMessage={message} />
       </div>
     </div>
   );

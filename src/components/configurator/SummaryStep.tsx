@@ -1,5 +1,7 @@
 import { buildWhatsAppUrl, WHATSAPP_PHONE_LOCAL } from "@/components/whatsapp/whatsappLink";
 import { buildWhatsAppOrderMessage } from "@/components/configurator/buildOrderMessage";
+import { AiVisualizationPanel } from "@/components/configurator/ai-visualization";
+import type { VisualizationSelectionSummary } from "@/components/configurator/ai-visualization";
 import { curtainColors, curtainTypes } from "@/lib/data/curtain-products";
 import type { ConfiguratorSelections } from "@/components/configurator/useConfiguratorState";
 
@@ -13,6 +15,12 @@ export function SummaryStep({ selections }: SummaryStepProps) {
 
   const message = buildWhatsAppOrderMessage(selections);
   const whatsAppHref = buildWhatsAppUrl(WHATSAPP_PHONE_LOCAL, message);
+
+  const visualizationSelection: VisualizationSelectionSummary = {
+    category: "curtains",
+    typeLabel: type?.label ?? "",
+    colorLabel: color?.label ?? "",
+  };
 
   return (
     <div>
@@ -48,7 +56,6 @@ export function SummaryStep({ selections }: SummaryStepProps) {
         </div>
       </div>
 
-      {/* Future phase: an "AI visualization" option will be added alongside the WhatsApp button below. */}
       <div className="mt-8 flex max-w-md flex-col gap-3">
         <a
           href={whatsAppHref}
@@ -58,6 +65,7 @@ export function SummaryStep({ selections }: SummaryStepProps) {
         >
           שלח הזמנה בוואטסאפ
         </a>
+        <AiVisualizationPanel selection={visualizationSelection} whatsAppOrderMessage={message} />
       </div>
     </div>
   );
