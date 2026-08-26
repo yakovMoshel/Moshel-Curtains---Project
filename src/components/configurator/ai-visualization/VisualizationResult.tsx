@@ -69,6 +69,10 @@ export function VisualizationResult({
         >
           הורד תמונה
         </a>
+        <p className="text-center text-xs text-curtain-taupe">
+          כדאי לשמור את התמונה ולשתף עם מי שרלוונטי
+        </p>
+
         <a
           href={whatsAppHref}
           target="_blank"
@@ -77,6 +81,10 @@ export function VisualizationResult({
         >
           שלח הזמנה בוואטסאפ
         </a>
+        <p className="text-center text-xs text-curtain-taupe">
+          אם לא הצלחתם לצרף את התמונה, אפשר לשלוח אותה ידנית
+        </p>
+
         <button
           type="button"
           onClick={onReset}
