@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AiVisualizationPanel } from "@/components/configurator/ai-visualization/AiVisualizationPanel";
 
@@ -26,6 +26,7 @@ describe("AiVisualizationPanel", () => {
   afterEach(() => {
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   it("shows loading then the result on a successful upload", async () => {
@@ -96,5 +97,39 @@ describe("AiVisualizationPanel", () => {
 
     // The plain order link should still be visible — only success hides it.
     expect(screen.getByRole("link", { name: "שלח הזמנה בוואטסאפ" })).toBeInTheDocument();
+  });
+
+  it("shows a timeout error if the request takes too long", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((_url: string, init?: RequestInit) => {
+        return new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () => {
+            reject(new DOMException("Aborted", "AbortError"));
+          });
+        });
+      }),
+    );
+
+    render(
+      <AiVisualizationPanel
+        selection={selection}
+        whatsAppOrderMessage="הודעת הזמנה"
+        whatsAppHref="https://wa.me/972526286837?text=הודעת+הזמנה"
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "רוצה לראות איך זה ייראה אצלכם בבית?" }));
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+
+    vi.useFakeTimers();
+    fireEvent.change(fileInput, { target: { files: [openPanelAndUpload()] } });
+
+    await act(() => vi.advanceTimersByTimeAsync(90_000));
+    vi.useRealTimers();
+
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toHaveTextContent("יצירת ההדמיה לוקחת יותר זמן מהצפוי");
+    });
   });
 });

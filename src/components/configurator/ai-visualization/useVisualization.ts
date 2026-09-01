@@ -27,6 +27,15 @@ const NETWORK_ERROR: VisualizationErrorInfo = {
   message: "בעיית תקשורת. נא לבדוק את החיבור לאינטרנט ולנסות שוב",
 };
 
+const TIMEOUT_ERROR: VisualizationErrorInfo = {
+  code: "timeout",
+  message: "יצירת ההדמיה לוקחת יותר זמן מהצפוי. נא לנסות שוב",
+};
+
+// Real-world gpt-image-1 edit calls typically take 45-90s; this gives up rather
+// than leaving the customer staring at an indefinite loading state forever.
+const REQUEST_TIMEOUT_MS = 90 * 1000;
+
 export function useVisualization(selection: VisualizationSelectionSummary): UseVisualizationResult {
   const [status, setStatus] = useState<VisualizationStatus>("idle");
   const [originalPreviewUrl, setOriginalPreviewUrl] = useState<string | null>(null);
@@ -80,7 +89,10 @@ export function useVisualization(selection: VisualizationSelectionSummary): UseV
       if (selection.extraLabel) formData.set("extraLabel", selection.extraLabel);
 
       setStatus("processing");
-      fetch("/api/visualize", { method: "POST", body: formData })
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+      fetch("/api/visualize", { method: "POST", body: formData, signal: controller.signal })
         .then(async (response) => {
           if (!isMountedRef.current) return;
 
@@ -98,11 +110,16 @@ export function useVisualization(selection: VisualizationSelectionSummary): UseV
           setResultImageDataUrl(`data:${body.mimeType};base64,${body.image}`);
           setStatus("success");
         })
-        .catch(() => {
+        .catch((err) => {
           if (!isMountedRef.current) return;
           setStatus("error");
-          setError(NETWORK_ERROR);
-        });
+          setError(
+            err instanceof DOMException && err.name === "AbortError"
+              ? TIMEOUT_ERROR
+              : NETWORK_ERROR,
+          );
+        })
+        .finally(() => clearTimeout(timeoutId));
     },
     [
       revokePreview,

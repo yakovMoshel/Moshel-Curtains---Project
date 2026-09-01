@@ -11,7 +11,7 @@ export function VisualizationLoading() {
         <span className="h-3 w-3 animate-bounce rounded-full bg-curtain-espresso" />
       </div>
       <p className="text-sm font-medium text-curtain-espresso">יוצרים עבורך הדמיה...</p>
-      <p className="text-xs text-curtain-taupe">זה עשוי לקחת עד 30 שניות</p>
+      <p className="text-xs text-curtain-taupe">זה עשוי לקחת עד דקה וחצי</p>
     </div>
   );
 }
