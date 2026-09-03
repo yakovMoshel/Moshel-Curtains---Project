@@ -53,6 +53,28 @@ export function useScrollSequenceController({
     let isAnimating = false;
     let cooldownUntil = 0;
 
+    // Low-priority prefetch of the stops adjacent to wherever the user is currently
+    // resting. Unlike the high-priority whole-range prefetch in `goToStop` (which only
+    // gets the fixed tween duration as lead time), this runs the moment the user is idle
+    // on a stop — often several seconds — so by the time they actually gesture, the
+    // destination range is frequently already warm in the cache.
+    function prefetchAdjacentStops(stopIndex: number): void {
+      const cache = cacheRef.current;
+      if (!cache) return;
+      for (const neighborIndex of [stopIndex - 1, stopIndex + 1]) {
+        const neighborStop = stops[neighborIndex];
+        if (neighborStop === undefined) continue;
+        const currentFrame = stops[stopIndex]!;
+        const rangeStart = Math.min(currentFrame, neighborStop);
+        const rangeEnd = Math.max(currentFrame, neighborStop);
+        for (let frame = rangeStart; frame <= rangeEnd; frame++) {
+          void cache.ensure(frame, "low");
+        }
+      }
+    }
+
+    prefetchAdjacentStops(currentStopIndex);
+
     const trigger = ScrollTrigger.create({
       trigger: trackEl,
       start: "top top",
@@ -108,6 +130,7 @@ export function useScrollSequenceController({
         onComplete: () => {
           isAnimating = false;
           cooldownUntil = Date.now() + POST_TRANSITION_COOLDOWN_MS;
+          prefetchAdjacentStops(currentStopIndex);
         },
       });
       return true;
