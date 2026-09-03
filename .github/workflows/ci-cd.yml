@@ -1,0 +1,61 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Lint, typecheck, test, build, e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Pinned to match production (see DEPLOYMENT.md) and the `openai`
+          # package's Node <22 requirement.
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run typecheck
+
+      - run: npm run test
+
+      - run: npm run build
+
+      - run: npx playwright install --with-deps chromium
+
+      - run: npm run test:e2e
+
+  deploy:
+    name: Deploy to production
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: true
+    steps:
+      # Mirrors the manual update sequence in DEPLOYMENT.md ("Deploying
+      # updates") exactly — the server rebuilds itself from its own clone
+      # rather than receiving an artifact, so this is the only step needed.
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_SSH_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: ${{ secrets.EC2_SSH_PORT || 22 }}
+          script: |
+            set -e
+            cd ~/Moshel-Curtains---Project
+            git pull
+            npm install
+            npm run build
+            pm2 reload moshel-curtains

@@ -209,6 +209,20 @@ sudo /opt/certbot/bin/certbot renew --dry-run
 
 ## 6. Deploying updates
 
+**This is now automated.** `.github/workflows/ci-cd.yml` runs lint,
+typecheck, Vitest, a production build, and Playwright e2e on every push; if
+all of that passes on `main`, it SSHes into this instance and runs the exact
+sequence below. Watch it in the repo's **Actions** tab.
+
+Required repo secrets (Settings → Secrets and variables → Actions) for the
+deploy step to work: `EC2_HOST` (this instance's IP or domain), `EC2_SSH_USER`
+(`ec2-user`), `EC2_SSH_KEY` (the private key contents from the `.pem` file
+downloaded when the instance was created), and optionally `EC2_SSH_PORT` if
+SSH isn't on the default port 22.
+
+What it runs on the server (also the manual fallback if CI is down or a
+deploy needs to happen by hand):
+
 ```bash
 git pull
 npm install
