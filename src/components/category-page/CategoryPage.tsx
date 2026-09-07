@@ -110,9 +110,14 @@ export function CategoryPage({ category, children }: CategoryPageProps) {
             className="object-cover"
           />
         </div>
-        <Link href="/" className="text-sm font-medium text-stone-600 underline">
-          חזרה לדף הבית
-        </Link>
+        <div className="flex items-center gap-6">
+          <Link href="/" className="text-sm font-medium text-stone-600 underline">
+            חזרה לדף הבית
+          </Link>
+          <Link href="/contact" className="text-sm font-medium text-stone-600 underline">
+            צור קשר
+          </Link>
+        </div>
       </div>
     </main>
   );

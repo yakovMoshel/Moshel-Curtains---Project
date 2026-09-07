@@ -1,4 +1,6 @@
 export { ContactForm } from "@/components/contact/ContactForm";
+export { AddressCard } from "@/components/contact/AddressCard";
+export { BUSINESS_ADDRESS, buildMapsEmbedUrl } from "@/components/contact/address";
 export {
   PRODUCT_OPTIONS,
   validateContactForm,
