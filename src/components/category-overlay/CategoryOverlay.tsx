@@ -65,13 +65,22 @@ export function CategoryOverlay({ section }: CategoryOverlayProps) {
         </p>
         <h2 className="text-4xl font-semibold tracking-tight sm:text-6xl">{content.heading}</h2>
         <p className="max-w-sm text-base text-stone-100 sm:text-lg">{content.copy}</p>
-        <Link
-          href={content.href}
-          tabIndex={isActive ? 0 : -1}
-          className="inline-block border-b border-stone-50/60 pb-1 text-sm font-medium tracking-wide transition-colors hover:border-stone-50"
-        >
-          {content.ctaLabel}
-        </Link>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Link
+            href={content.href}
+            tabIndex={isActive ? 0 : -1}
+            className="inline-block border-b border-stone-50/60 pb-1 text-sm font-medium tracking-wide transition-colors hover:border-stone-50"
+          >
+            {content.ctaLabel}
+          </Link>
+          <Link
+            href="/contact"
+            tabIndex={isActive ? 0 : -1}
+            className="inline-block border-b border-stone-200/40 pb-1 text-sm font-medium tracking-wide text-stone-200 transition-colors hover:border-stone-200 hover:text-stone-50"
+          >
+            צור קשר
+          </Link>
+        </div>
       </div>
     </div>
   );
