@@ -59,10 +59,13 @@ export function ContactForm() {
     }
   }
 
+  const inputClassName =
+    "rounded-sm border border-curtain-tan bg-curtain-cream px-4 py-2 text-curtain-espresso focus:border-curtain-gold focus:ring-2 focus:ring-curtain-gold/40 focus:outline-none";
+
   return (
     <form onSubmit={handleSubmit} noValidate className="flex max-w-md flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <label htmlFor="name" className="text-sm font-medium text-stone-700">
+        <label htmlFor="name" className="text-sm font-medium text-curtain-espresso">
           שם מלא
         </label>
         <input
@@ -70,7 +73,7 @@ export function ContactForm() {
           type="text"
           value={values.name}
           onChange={(e) => updateField("name", e.target.value)}
-          className="rounded-sm border border-stone-300 px-4 py-2"
+          className={inputClassName}
         />
         {errors.name && (
           <p role="alert" className="text-sm text-red-700">
@@ -80,7 +83,7 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="phone" className="text-sm font-medium text-stone-700">
+        <label htmlFor="phone" className="text-sm font-medium text-curtain-espresso">
           טלפון
         </label>
         <input
@@ -88,7 +91,7 @@ export function ContactForm() {
           type="tel"
           value={values.phone}
           onChange={(e) => updateField("phone", e.target.value)}
-          className="rounded-sm border border-stone-300 px-4 py-2"
+          className={inputClassName}
         />
         {errors.phone && (
           <p role="alert" className="text-sm text-red-700">
@@ -98,14 +101,14 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="productType" className="text-sm font-medium text-stone-700">
+        <label htmlFor="productType" className="text-sm font-medium text-curtain-espresso">
           סוג מוצר
         </label>
         <select
           id="productType"
           value={values.productType}
           onChange={(e) => updateField("productType", e.target.value)}
-          className="rounded-sm border border-stone-300 px-4 py-2"
+          className={inputClassName}
         >
           <option value="">בחרו סוג מוצר</option>
           {PRODUCT_OPTIONS.map((option) => (
@@ -124,7 +127,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="rounded-sm bg-stone-900 px-6 py-3 text-sm font-medium text-stone-50 disabled:opacity-50"
+        className="rounded-sm bg-curtain-espresso px-6 py-3 text-sm font-medium text-curtain-cream transition-transform duration-300 hover:scale-[1.02] focus:ring-2 focus:ring-curtain-gold/40 focus:outline-none disabled:opacity-50 disabled:hover:scale-100"
       >
         {status === "submitting" ? "שולח..." : "שליחה"}
       </button>
