@@ -3,6 +3,8 @@ import { BlindConfiguratorWizard } from "@/components/configurator/BlindConfigur
 
 export const metadata: Metadata = {
   title: "בניית הזמנה | תריסים | מושל הוילונות",
+  description: "בנו הזמנת תריסים בהתאמה אישית — בחירת סוג, חומר, מידות והדמיה.",
+  alternates: { canonical: "/blinds/configure" },
 };
 
 export default function ConfigureBlinds() {

@@ -3,6 +3,8 @@ import { TableclothConfiguratorWizard } from "@/components/configurator/Tableclo
 
 export const metadata: Metadata = {
   title: "בניית הזמנה | מפות | מושל הוילונות",
+  description: "בנו הזמנת מפת בד בהתאמה אישית — בחירת מידות, בד והדמיה.",
+  alternates: { canonical: "/tablecloths/configure" },
 };
 
 export default function ConfigureTablecloths() {

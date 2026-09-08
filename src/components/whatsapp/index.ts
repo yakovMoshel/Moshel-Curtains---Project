@@ -1,2 +1,6 @@
 export { WhatsAppButton } from "@/components/whatsapp/WhatsAppButton";
-export { buildWhatsAppUrl, WHATSAPP_PHONE_LOCAL } from "@/components/whatsapp/whatsappLink";
+export {
+  buildWhatsAppUrl,
+  toInternationalIsraeliPhone,
+  WHATSAPP_PHONE_LOCAL,
+} from "@/components/whatsapp/whatsappLink";

@@ -4,6 +4,8 @@ import { UpholsteryStylesTeaser } from "@/components/upholstery-teaser";
 
 export const metadata: Metadata = {
   title: "ריפוד | מושל הוילונות",
+  description: "בדים ומרקמים איכותיים המעניקים לרהיטים שלכם חיים חדשים.",
+  alternates: { canonical: "/upholstery" },
 };
 
 export default function Upholstery() {

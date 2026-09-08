@@ -4,6 +4,7 @@ import { AddressCard, BUSINESS_ADDRESS, ContactForm } from "@/components/contact
 export const metadata: Metadata = {
   title: "צור קשר | מושל הוילונות",
   description: `צרו קשר עם מושל הוילונות בכתובת ${BUSINESS_ADDRESS}, או השאירו פרטים ונחזור אליכם בהקדם.`,
+  alternates: { canonical: "/contact" },
 };
 
 export default function Contact() {
