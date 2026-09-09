@@ -80,6 +80,13 @@ export function CategoryOverlay({ section }: CategoryOverlayProps) {
           >
             צור קשר
           </Link>
+          <Link
+            href="/about"
+            tabIndex={isActive ? 0 : -1}
+            className="inline-block border-b border-stone-200/40 pb-1 text-sm font-medium tracking-wide text-stone-200 transition-colors hover:border-stone-200 hover:text-stone-50"
+          >
+            עלינו
+          </Link>
         </div>
       </div>
     </div>

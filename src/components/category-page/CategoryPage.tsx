@@ -117,6 +117,9 @@ export function CategoryPage({ category, children }: CategoryPageProps) {
           <Link href="/contact" className="text-sm font-medium text-stone-600 underline">
             צור קשר
           </Link>
+          <Link href="/about" className="text-sm font-medium text-stone-600 underline">
+            עלינו
+          </Link>
         </div>
       </div>
     </main>

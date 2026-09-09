@@ -17,7 +17,8 @@ const frankRuhlLibre = Frank_Ruhl_Libre({
 
 const SITE_URL = "https://moshelhavilonot.co.il";
 const SITE_TITLE = "מושל הוילונות";
-const SITE_DESCRIPTION = "וילונות, תריסים, ריפוד ומפות בהתאמה אישית — מושל הוילונות";
+const SITE_DESCRIPTION =
+  "וילונות, תריסים, ריפוד ומפות בהתאמה אישית — מושל הוילונות. פועלים באזור ירושלים, בית שמש, מודיעין, בנימין, שומרון, תל אביב והמרכז.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
