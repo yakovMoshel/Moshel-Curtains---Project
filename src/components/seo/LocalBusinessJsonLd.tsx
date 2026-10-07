@@ -30,9 +30,10 @@ export function LocalBusinessJsonLd() {
       "וילונות, תריסים, ריפוד ומפות בהתאמה אישית — לבתים, מוסדות לימודים, בתי מלון ועסקים.",
     url: SITE_URL,
     areaServed: AREA_SERVED,
-    // Interim image (see src/app/opengraph-image.tsx) until the business's
-    // own logo file is uploaded — swap this to its path at that point.
-    image: `${SITE_URL}/opengraph-image`,
+    // The business's own logo mark (src/app/icon.png), per schema.org/Google's
+    // guidance that this field should be the actual brand logo, not a
+    // generic share card.
+    image: `${SITE_URL}/icon.png`,
     telephone: `+${toInternationalIsraeliPhone(WHATSAPP_PHONE_LOCAL)}`,
     address: {
       "@type": "PostalAddress",
