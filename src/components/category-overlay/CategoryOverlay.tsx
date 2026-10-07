@@ -65,7 +65,7 @@ export function CategoryOverlay({ section }: CategoryOverlayProps) {
         </p>
         <h2 className="text-4xl font-semibold tracking-tight sm:text-6xl">{content.heading}</h2>
         <p className="max-w-sm text-base text-stone-100 sm:text-lg">{content.copy}</p>
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 pb-14 sm:pb-0">
           <Link
             href={content.href}
             tabIndex={isActive ? 0 : -1}
