@@ -11,7 +11,12 @@ const APEX_HOST = "moshelhavilonot.co.il";
 export function proxy(request: NextRequest): NextResponse {
   if (request.headers.get("host") === WWW_HOST) {
     const url = new URL(request.url);
+    url.protocol = "https:";
     url.hostname = APEX_HOST;
+    // request.url reflects the app's own internal listening port (e.g. :3000)
+    // behind the Nginx reverse proxy, not the public :443 the visitor used —
+    // strip it so the redirect doesn't send visitors to an internal-only port.
+    url.port = "";
     return NextResponse.redirect(url, 301);
   }
   return NextResponse.next();
